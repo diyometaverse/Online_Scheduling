@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+  }
+
+  .login-wrapper{
+    max-width:420px;
+    margin:60px auto 80px auto;
+    padding:35px;
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.06);
+    text-align:center;
+  }
+
+  .login-logo{
+    height:80px;
+    border-radius:12px;
+    margin-bottom:15px;
+    box-shadow:0 0 14px rgba(196,59,141,0.35);
+  }
+
+  .logotype{
+    font-family:'Great Vibes',cursive;
+    font-size:42px;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+
+  .subtitle{
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+
+  /* ❌ ERROR MESSAGE */
+  .login-error{
+    background:rgba(196,59,141,0.15);
+    border:1px solid rgba(196,59,141,0.5);
+    color:#ffb3d9;
+    padding:10px 14px;
+    border-radius:10px;
+    margin-bottom:18px;
+    font-size:14px;
+    box-shadow:0 0 12px rgba(196,59,141,0.25);
+  }
+
+  form p{
+    position:relative;
+  }
+
+  form label{
+    color:var(--muted);
+    font-size:14px;
+    display:block;
+    text-align:left;
+  }
+
+  form input{
+    width:100%;
+    padding:10px 42px 10px 12px;
+    margin-top:4px;
+    margin-bottom:14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.08);
+    background:#0c050e;
+    color:white;
+  }
+
+  .toggle-password{
+    position:absolute;
+    right:12px;
+    top:36px;
+    cursor:pointer;
+    font-size:16px;
+    color:var(--muted);
+    user-select:none;
+  }
+
+  .toggle-password:hover{
+    color:var(--accent);
+  }
+
+  button{
+    width:100%;
+    padding:12px;
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    color:white;
+    font-weight:600;
+    border:none;
+    border-radius:10px;
+    margin-top:6px;
+    cursor:pointer;
+  }
+
+  .signup-text{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .signup-text a{
+    color:var(--accent);
+    text-decoration:none;
+  }
+</style>
+
+<div class="login-wrapper">
+
+  <img src="{% static 'images/kurumi_logo.jpg' %}" class="login-logo" alt="Kuromi Studio Logo">
+
+  <div class="logotype">Kuromi Studio</div>
+  <div class="subtitle">Welcome Back</div>
+
+  <h2 style="color:white;margin-bottom:14px;font-size:22px;">Login</h2>
+
+  <!-- ❌ ERROR MESSAGE -->
+  {% if form.non_field_errors %}
+    <div class="login-error">
+      Wrong password. Try again.
+    </div>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <!-- USERNAME -->
+    <p>
+      <label for="id_username">Username</label>
+      {{ form.username }}
+    </p>
+
+    <!-- PASSWORD -->
+    <p>
+      <label for="id_password">Password</label>
+      {{ form.password }}
+      <span class="toggle-password" onclick="togglePassword()">👁️</span>
+    </p>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p class="signup-text">
+    Don't have an account?
+    <a href="{% url 'signup' %}">Sign up</a>
+  </p>
+
+</div>
+
+<script>
+function togglePassword(){
+  const passwordField = document.getElementById("id_password");
+  const toggleIcon = document.querySelector(".toggle-password");
+
+  if(passwordField.type === "password"){
+    passwordField.type = "text";
+    toggleIcon.innerText = "🙈";
+  }else{
+    passwordField.type = "password";
+    toggleIcon.innerText = "👁️";
+  }
+}
+</script>
+
+{% endblock %}

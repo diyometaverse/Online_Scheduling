@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Details - Kuromi Studio{% endblock %}
+
+{% block content %}
+<div style="
+    max-width: 520px;
+    margin: 80px auto;
+    padding: 35px;
+    background: rgba(35, 10, 35, 0.75);
+    border-radius: 22px;
+    border: 1px solid rgba(196,59,141,0.45);
+    box-shadow: 0 0 30px rgba(196,59,141,0.25);
+    color: white;
+    backdrop-filter: blur(6px);
+">
+
+    <h1 style="
+        font-family: 'Great Vibes', cursive;
+        color: var(--accent);
+        font-size: 32px;
+        text-align: center;
+        margin-bottom: 20px;
+    ">Booking Details</h1>
+
+    <!-- SERVICE -->
+    <p style="font-size: 16px; margin-bottom: 10px;">
+        <strong>Service:</strong> {{ booking.service_type }}
+    </p>
+
+    <!-- DATE & TIME -->
+    <p style="font-size: 16px; margin-bottom: 10px;">
+        <strong>Date & Time:</strong> {{ booking.session_datetime|date:"F j, Y — g:i A" }}
+    </p>
+
+    <!-- STATUS -->
+    <p style="font-size: 16px; margin-bottom: 10px;">
+        <strong>Status:</strong> 
+        <span style="color: var(--accent); font-weight:600;">
+            {{ booking.status }}
+        </span>
+    </p>
+
+    <!-- NOTES -->
+    {% if booking.notes %}
+    <p style="font-size: 15px; margin-top: 15px; color: var(--muted); line-height: 1.6;">
+        <strong>Notes:</strong><br>
+        {{ booking.notes }}
+    </p>
+    {% endif %}
+
+    <div style="margin-top: 30px; display:flex; gap:10px;">
+        <a href="{% url 'dashboard' %}" style="
+            flex:1;
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 14px;
+            text-align:center;
+            text-decoration:none;
+            color:white;
+            font-weight:600;
+        ">Back</a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Dashboard - Kuromi Studio{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout" style="display:flex; gap:30px; max-width:1200px; margin:80px auto;">
+
+ <!-- LEFT SIDE: EVENT IMAGES -->
+<div style="flex:1; display:grid; grid-template-columns:1fr; gap:20px;">
+<!-- Portrait Session Card -->
+<div style="background:rgba(35,10,35,0.7); padding:20px; border-radius:20px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 25px rgba(196,59,141,0.2);">
+<img src="{% static 'images/portrait.jpg' %}" style="width:100%; border-radius:15px; margin-bottom:10px;">
+<h3 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:22px;">Portrait Session</h3>
+<p style="color:var(--muted); font-size:14px;">Soft, elegant, and expressive portraits designed to bring out your best look.</p>
+</div>
+
+
+<!-- Wedding Photoshoot -->
+<div style="background:rgba(35,10,35,0.7); padding:20px; border-radius:20px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 25px rgba(196,59,141,0.2);">
+<img src="{% static 'images/wedding.jpg' %}" style="width:100%; border-radius:15px; margin-bottom:10px;">
+<h3 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:22px;">Wedding Photoshoot</h3>
+<p style="color:var(--muted); font-size:14px;">Capturing the sweetest moments of love, celebration, and forever memories.</p>
+</div>
+
+
+<!-- Product Photography -->
+<div style="background:rgba(35,10,35,0.7); padding:20px; border-radius:20px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 25px rgba(196,59,141,0.2);">
+<img src="{% static 'images/product.jpg' %}" style="width:100%; border-radius:15px; margin-bottom:10px;">
+<h3 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:22px;">Product Photography</h3>
+<p style="color:var(--muted); font-size:14px;">Stylized shots perfect for ads, shops, and branding to make your products shine.</p>
+</div>
+
+
+<!-- Event Coverage -->
+<div style="background:rgba(35,10,35,0.7); padding:20px; border-radius:20px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 25px rgba(196,59,141,0.2);">
+<img src="{% static 'images/event.jpg' %}" style="width:100%; border-radius:15px; margin-bottom:10px;">
+<h3 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:22px;">Event Coverage</h3>
+<p style="color:var(--muted); font-size:14px;">Complete coverage of birthdays, parties, and special events—captured beautifully.</p>
+</div>
+</div>
+
+
+<!-- RIGHT SIDE: WELCOME, NEXT SESSION, SUMMARY -->
+<div style="flex:1;">
+
+
+<!-- HEART SHAPE WELCOME CARD -->
+<div style="max-width:420px; margin:0 auto 40px auto; padding:40px; background:rgba(35,10,35,0.7); border-radius:20px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 25px rgba(196,59,141,0.2); text-align:center; ">
+<h1 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:28px; margin-bottom:10px;">Welcome, {{ request.user.username }}!</h1>
+<p style="font-size:14px; color:var(--muted); opacity:0.85; line-height:1.6;">
+Welcome to <strong>Kawaii Studio</strong>! Your cute and magical space for capturing memories.
+</p>
+</div>
+
+
+{% if next_booking %}
+<div style="max-width:420px; margin:0 auto 20px auto; padding:18px 22px; background:rgba(35, 10, 35, 0.7); border-radius:15px; border:1px solid rgba(196,59,141,0.4); box-shadow:0 0 18px rgba(196,59,141,0.2); color:white;">
+<h2 style="font-family:'Great Vibes', cursive; color:var(--accent); font-size:20px; text-align:center; margin-bottom:10px;">Next Session</h2>
+<p><strong>Date & Time:</strong> {{ next_booking.session_datetime|date:"F j, Y, g:i A" }}</p>
+<p><strong>Service:</strong> {{ next_booking.service_type }}</p>
+<a href="{% url 'booking_details' next_booking.id %}" style="display:block; background:linear-gradient(90deg, var(--accent), #8b2a6c); padding:10px; border-radius:12px; color:white; text-align:center; font-weight:600; margin-top:10px; text-decoration:none;">View Details</a>
+</div>
+{% endif %}
+
+<div style="
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 30px;
+    background: rgba(35, 10, 35, 0.7);
+    border-radius: 20px;
+    border: 1px solid rgba(196,59,141,0.4);
+    box-shadow: 0 0 25px rgba(196,59,141,0.2);
+">
+    <h2 style="
+        font-family: 'Great Vibes', cursive;
+        color: var(--accent);
+        font-size: 26px;
+        text-align: center;
+        margin-bottom: 25px;
+    ">Booking Summary</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px;">
+        <div style="background: rgba(50, 20, 55, 0.6); padding: 22px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+            <p style="color:var(--muted); font-size:14px; text-align:center; text-transform:uppercase; letter-spacing:1px;">Total Sessions</p>
+            <p style="color:white; font-size:30px; text-align:center; font-weight:600;">{{ total_booked }}</p>
+        </div>
+
+        <div style="background: rgba(50, 20, 55, 0.6); padding: 22px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+            <p style="color:var(--muted); font-size:14px; text-align:center; text-transform:uppercase; letter-spacing:1px;">Pending</p>
+            <p style="color:white; font-size:30px; text-align:center; font-weight:600;">{{ pending_sessions }}</p>
+        </div>
+
+        <div style="background: rgba(50, 20, 55, 0.6); padding: 22px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+            <p style="color:var(--muted); font-size:14px; text-align:center; text-transform:uppercase; letter-spacing:1px;">Completed</p>
+            <p style="color:white; font-size:30px; text-align:center; font-weight:600;">{{ completed_sessions }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Photography Categories Section -->
+<div style="
+    max-width: 1100px;
+    margin: 70px auto;
+    padding: 30px;
+    background: rgba(35, 10, 35, 0.7);
+    border-radius: 20px;
+    border: 1px solid rgba(196,59,141,0.4);
+    box-shadow: 0 0 25px rgba(196,59,141,0.2);
+">
+    <h2 style="font-family: 'Great Vibes', cursive; color: var(--accent); font-size: 30px; text-align:center; margin-bottom: 40px;">Our Photography Styles</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 35px;">
+
+        <div style="text-align:center; background: rgba(255,255,255,0.05); padding:20px; border-radius:15px;">
+            <img src="/static/images/angela.jpg" style="width:100%; border-radius:15px;">
+            <h3 style="color:white; margin-top:15px;">Portrait Session</h3>
+            <p style="color:var(--muted); font-size:14px;">Perfect for personal shoots, creative themes, or profile photos that highlight your best look.</p>
+        </div>
+
+        <div style="text-align:center; background: rgba(255,255,255,0.05); padding:20px; border-radius:15px;">
+            <img src="/static/images/rabin.jpg" style="width:100%; border-radius:15px;">
+            <h3 style="color:white; margin-top:15px;">Wedding Photoshoot</h3>
+            <p style="color:var(--muted); font-size:14px;">Elegant and emotional captures made to preserve the magic of your special day.</p>
+        </div>
+
+        <div style="text-align:center; background: rgba(255,255,255,0.05); padding:20px; border-radius:15px;">
+            <img src="/static/images/product_rabin.jpg" style="width:100%; border-radius:15px;">
+            <h3 style="color:white; margin-top:15px;">Product Photography</h3>
+            <p style="color:var(--muted); font-size:14px;">Clean and professional product shots ideal for online stores and brand promotions.</p>
+        </div>
+
+        <div style="text-align:center; background: rgba(255,255,255,0.05); padding:20px; border-radius:15px;">
+            <img src="/static/images/event_angela.jpg" style="width:100%; border-radius:15px;">
+            <h3 style="color:white; margin-top:15px;">Event Coverage</h3>
+            <p style="color:var(--muted); font-size:14px;">Capturing the highlights of birthdays, corporate gatherings, and special celebrations.</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

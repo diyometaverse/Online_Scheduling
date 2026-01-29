@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="kb-wrapper">
+  <div class="kb-card" style="text-align:center">
+    <h2 class="kb-title">Delete Booking</h2>
+
+    <p class="kb-msg">Are you sure you want to delete this booking?</p>
+    <p class="kb-info"><strong>{{ booking.service_name }}</strong><br>{{ booking.date }} at {{ booking.time }}</p>
+
+    <form method="POST" style="margin-top: 20px;">
+        {% csrf_token %}
+        <button type="submit" class="kb-btn-delete">Confirm Delete</button>
+    </form>
+
+    <a href="{% url 'my_bookings' %}" class="kb-back">Cancel</a>
+  </div>
+</div>
+
+<style>
+  :root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+  }
+
+  .kb-wrapper{
+    max-width:500px;
+    margin:60px auto;
+    padding:20px;
+  }
+
+  .kb-card{
+    background:var(--card);
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.05);
+  }
+
+  .kb-title{
+    font-family:'Great Vibes',cursive;
+    font-size:42px;
+    color:var(--accent);
+    margin-top:0;
+    margin-bottom:10px;
+  }
+
+  .kb-msg{
+    color:var(--muted);
+    font-size:16px;
+    margin-bottom:10px;
+  }
+
+  .kb-info{
+    color:#fff;
+    font-size:18px;
+    margin-bottom:20px;
+  }
+
+  .kb-btn-delete{
+    background:#b1164f;
+    background:linear-gradient(90deg,#b1164f,#8b1e46);
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    width:100%;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(177,22,79,0.25);
+  }
+
+  .kb-btn-delete:hover{
+    opacity:0.9;
+  }
+
+  .kb-back{
+    display:block;
+    margin-top:18px;
+    text-align:center;
+    color:var(--accent);
+    text-decoration:none;
+  }
+</style>
+{% endblock %}

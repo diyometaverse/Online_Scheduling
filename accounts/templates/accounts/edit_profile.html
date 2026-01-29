@@ -1,0 +1,166 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Edit Profile — Kuromi Studio</title>
+
+  <style>
+    :root{
+      --bg:#0f0710;
+      --card:#1e1320;
+      --accent:#c43b8d;
+      --muted:#bba6bf;
+      --glass:rgba(255,255,255,0.04);
+    }
+
+    body{margin:0;font-family:Montserrat,Arial;background:var(--bg);color:var(--muted)}
+    .container{max-width:900px;margin:40px auto;padding:20px}
+    .card{background:var(--card);padding:24px;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.04)}
+
+    h1{color:#fff;margin:0 0 12px;font-size:32px}
+    label{display:block;margin-top:14px;font-size:14px;color:#fff}
+    input,select{width:100%;padding:10px;border-radius:8px;margin-top:6px;border:none;background:rgba(255,255,255,0.07);color:#fff}
+    input:focus,select:focus{outline:2px solid var(--accent)}
+
+    .avatar-select{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+    .icon-option{background:var(--glass);padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:0.2s;position:relative}
+    .icon-option:hover{background:rgba(255,255,255,0.1)}
+    .icon-option input{display:none}
+    .icon-option.active{border:2px solid var(--accent)}
+
+    .icon-option svg{width:60px;height:60px;fill:var(--muted)}
+
+    .btn{margin-top:20px;padding:12px 18px;border:none;border-radius:10px;background:linear-gradient(90deg,var(--accent),#8b2a6c);color:white;font-weight:600;width:100%;cursor:pointer}
+    .btn:hover{opacity:0.9}
+
+    a.back{color:var(--accent);display:inline-block;margin-bottom:16px;text-decoration:none}
+
+    .message{
+      background:var(--accent);
+      color:#fff;
+      padding:10px 16px;
+      border-radius:8px;
+      margin-bottom:12px;
+      opacity:1;
+      transition: opacity 0.5s;
+    }
+
+    .password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 40px; /* space for the eye icon */
+  box-sizing: border-box; /* ensure padding doesn't break layout */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px; /* bring it a bit more inside */
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  color: var(--muted);
+  font-size: 18px; /* slightly bigger icon */
+  line-height: 1;
+}
+
+.toggle-password:hover {
+  color: #fff;
+}
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="{% url 'user_profile' %}" class="back">← Back to Profile</a>
+
+  <div class="card">
+    <h1>Edit Profile</h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <label>Display Name</label>
+      <input type="text" name="display_name" value="{{ user.first_name }}" required>
+
+      <label>Username</label>
+      <input type="text" name="username" value="{{ user.username }}" required>
+
+      <label>Email</label>
+      <input type="email" name="email" value="{{ user.email }}" required>
+
+      <label>Choose Avatar Icon</label>
+      <div class="avatar-select">
+        <!-- ICON A -->
+        <label class="icon-option {% if user.profile.avatar == 'iconA' %}active{% endif %}">
+          <input type="radio" name="avatar" value="iconA" {% if user.profile.avatar == 'iconA' %}checked{% endif %}>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </label>
+
+        <!-- ICON B -->
+        <label class="icon-option {% if user.profile.avatar == 'iconB' %}active{% endif %}">
+          <input type="radio" name="avatar" value="iconB" {% if user.profile.avatar == 'iconB' %}checked{% endif %}>
+          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="12" rx="3"/><path d="M4 20h16"/></svg>
+        </label>
+
+        <!-- ICON C -->
+        <label class="icon-option {% if user.profile.avatar == 'iconC' %}active{% endif %}">
+          <input type="radio" name="avatar" value="iconC" {% if user.profile.avatar == 'iconC' %}checked{% endif %}>
+          <svg viewBox="0 0 24 24"><path d="M12 4a4 4 0 110 8 4 4 0 010-8z"/><path d="M6 20c0-3.3 3-6 6-6s6 2.7 6 6"/></svg>
+        </label>
+      </div>
+
+      <label>New Password</label>
+      <div class="password-wrapper">
+        <input type="password" name="password1" placeholder="Leave blank to keep current password">
+        <span class="toggle-password">&#128065;</span>
+      </div>
+
+      <label>Confirm Password</label>
+      <div class="password-wrapper">
+        <input type="password" name="password2" placeholder="Leave blank to keep current password">
+        <span class="toggle-password">&#128065;</span>
+      </div>
+
+      <button class="btn">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Auto-fade messages after 3 seconds
+  setTimeout(() => {
+    document.querySelectorAll('.message').forEach(msg => {
+      msg.style.opacity = '0';
+    });
+  }, 3000);
+
+  // Show/hide password functionality
+  document.querySelectorAll('.toggle-password').forEach(eye => {
+    eye.addEventListener('click', () => {
+      const input = eye.previousElementSibling;
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+  });
+
+  // Avatar selection active class
+  document.querySelectorAll('.avatar-select input').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('active'));
+      radio.closest('.icon-option').classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

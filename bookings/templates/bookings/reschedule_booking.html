@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reschedule Booking - Kuromi Studio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+}
+
+body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg),#07020a);
+    font-family:Montserrat, sans-serif;
+    color:var(--muted);
+}
+
+.container{
+    max-width:650px;
+    margin:60px auto;
+    padding:20px;
+}
+
+.card{
+    background:rgba(35,10,35,0.7);
+    padding:30px;
+    border-radius:22px;
+    border:1px solid rgba(196,59,141,0.4);
+    box-shadow:0 0 30px rgba(196,59,141,0.25);
+}
+
+.title{
+    font-family:'Great Vibes', cursive;
+    font-size:40px;
+    color:var(--accent);
+    text-align:center;
+    margin-bottom:30px;
+}
+
+label{
+    font-weight:600;
+    color:white;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:5px;
+    margin-bottom:20px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.06);
+    color:white;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.btn:hover{
+    transform:scale(1.03);
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:16px;
+    color:var(--muted);
+    text-decoration:none;
+}
+.back:hover{
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h1 class="title">Reschedule Booking</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Current Schedule</label>
+            <input type="text" value="{{ booking.session_datetime|date:'F j, Y g:i A' }}" disabled>
+
+            <label>New Date & Time</label>
+            {{ form.session_datetime }}
+
+            <button type="submit" class="btn">Save New Schedule</button>
+        </form>
+
+        <a href="{% url 'admin_dashboard' %}" class="back">← Back to Admin Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

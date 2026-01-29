@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="kb-update-wrapper">
+    <h2 class="kb-title">Update Booking</h2>
+
+    <form method="POST" class="kb-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="kb-btn">Update</button>
+    </form>
+
+    <a href="{% url 'my_bookings' %}" class="kb-cancel">Cancel</a>
+</div>
+
+<style>
+:root{
+    --bg:#0e0a12;
+    --card:#1a121e;
+    --accent:#c43b8d;
+    --soft:#bca7c7;
+}
+
+.kb-update-wrapper{
+    background:var(--card);
+    max-width:500px;
+    margin:60px auto;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.06);
+    color:white;
+}
+
+.kb-title{
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    text-align:center;
+    color:var(--accent);
+    margin-top:0;
+    margin-bottom:20px;
+}
+
+.kb-form p label{
+    color:var(--soft);
+    font-weight:600;
+}
+
+.kb-form input, .kb-form select{
+    width:100%;
+    padding:10px;
+    margin:8px 0 18px;
+    border-radius:10px;
+    border:none;
+    background:#2a1c2f;
+    color:white;
+}
+
+.kb-btn{
+    width:100%;
+    background:linear-gradient(90deg,#c43b8d,#8d2a62);
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    color:white;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(196,59,141,0.25);
+    cursor:pointer;
+}
+
+.kb-btn:hover{
+    opacity:0.9;
+}
+
+.kb-cancel{
+    display:block;
+    margin-top:15px;
+    text-align:center;
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+}
+</style>
+{% endblock %}

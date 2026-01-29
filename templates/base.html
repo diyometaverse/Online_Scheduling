@@ -1,0 +1,240 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Kuromi Studio{% endblock %}</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+    --alert-bg:#9c275c;
+}
+
+*{box-sizing:border-box;}
+
+body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg),#07020a);
+    color:var(--muted);
+    font-family:Montserrat, sans-serif;
+}
+
+/* NAVBAR */
+.top-navbar{
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.navbar-logo-wrapper{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+}
+
+.navbar-logo-img{
+    height:45px;
+    border-radius:8px;
+    box-shadow:0 0 10px rgba(196,59,141,0.3);
+}
+
+.navbar-logo{
+    font-family:'Great Vibes', cursive;
+    font-size:30px;
+    color:var(--accent);
+    text-shadow:0 0 12px rgba(196,59,141,0.35);
+}
+
+.navbar-links{
+    display:flex;
+    list-style:none;
+    gap:22px;
+    padding:0;
+    margin:0;
+}
+
+.navbar-links a{
+    color:var(--muted);
+    text-decoration:none;
+    transition:.2s;
+}
+
+.navbar-links a:hover{
+    color:white;
+}
+
+.navbar-button{
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    padding:8px 16px;
+    border-radius:10px;
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    box-shadow:0 6px 20px rgba(196,59,141,0.25);
+    cursor:pointer;
+}
+
+main{
+    max-width:1100px;
+    margin:40px auto;
+    padding:20px;
+}
+
+/* ALERT */
+.alert-bar{
+    position:sticky;
+    top:56px;
+    max-width:1100px;
+    margin:10px auto;
+    background:var(--alert-bg);
+    color:white;
+    padding:12px 20px;
+    border-radius:8px;
+    font-weight:600;
+    box-shadow:0 4px 10px rgba(196,59,141,0.4);
+}
+
+/* ===== LOGOUT MODAL ===== */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(4px);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal{
+    background:var(--card);
+    padding:30px;
+    border-radius:18px;
+    width:340px;
+    text-align:center;
+    box-shadow:0 0 30px rgba(196,59,141,0.4);
+    animation:fadeIn .3s ease;
+}
+
+.modal h3{
+    color:white;
+    margin-bottom:10px;
+}
+
+.modal p{
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.modal-buttons{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+}
+
+.btn-cancel{
+    background:#333;
+    color:white;
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-logout{
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    color:white;
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(.9);}
+    to{opacity:1; transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+{% if request.user.is_authenticated %}
+<nav class="top-navbar">
+
+    <a href="{% url 'dashboard' %}" class="navbar-logo-wrapper">
+        <img src="{% static 'images/kurumi_logo.jpg' %}" class="navbar-logo-img">
+        <span class="navbar-logo">Kurumi Studio ✧</span>
+    </a>
+
+    <ul class="navbar-links">
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'create_booking' %}">Book Session</a></li>
+        <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'user_profile' %}">Profile</a></li>
+    </ul>
+
+    <button class="navbar-button" onclick="openLogoutModal()">Logout</button>
+</nav>
+{% endif %}
+
+<!-- ALERTS -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert-bar">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- LOGOUT MODAL -->
+<div class="modal-overlay" id="logoutModal">
+    <div class="modal">
+        <h3>Log out?</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="closeLogoutModal()">No</button>
+            <a href="{% url 'logout' %}" class="btn-logout">Yes</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function openLogoutModal(){
+    document.getElementById('logoutModal').style.display = 'flex';
+}
+
+function closeLogoutModal(){
+    document.getElementById('logoutModal').style.display = 'none';
+}
+
+// auto hide alerts
+setTimeout(() => {
+    document.querySelectorAll('.alert-bar').forEach(alert => {
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 500);
+    });
+}, 3000);
+</script>
+
+</body>
+</html>

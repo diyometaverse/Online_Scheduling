@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: hotel-ease
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn photography_studio.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+    packages:
+      - libjpeg-dev
+      - zlib1g-dev

@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+  }
+
+  .signup-wrapper{
+    max-width:450px;
+    margin:60px auto 80px auto;
+    padding:35px;
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.06);
+    text-align:center;
+    position:relative;
+  }
+
+  .signup-logo {
+    height: 80px;
+    width: auto;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 14px rgba(196,59,141,0.35);
+  }
+
+  .logotype{
+    font-family:'Great Vibes',cursive;
+    font-size:42px;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+
+  .subtitle{
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:25px;
+  }
+
+  h2{
+    color:white;
+    margin-bottom:18px;
+    font-size:22px;
+  }
+
+  form p label{
+    color:var(--muted);
+    font-size:14px;
+    display:block;
+    text-align:left;
+  }
+
+  form input{
+    width:100%;
+    padding:10px 12px;
+    margin-top:4px;
+    margin-bottom:14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.08);
+    background:#0c050e;
+    color:white;
+    position:relative;
+  }
+
+  .password-wrapper{
+    position:relative;
+  }
+
+  .eye-icon{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    width:24px;
+    height:24px;
+    background:rgba(255,255,255,0.1);
+    border-radius:50%;
+    padding:3px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s;
+  }
+
+  .eye-icon svg{
+    fill:#c43b8d;
+    width:16px;
+    height:16px;
+  }
+
+  .eye-icon:hover{
+    opacity:1;
+    transform:scale(1.1);
+  }
+
+  button{
+    width:100%;
+    padding:12px;
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    color:white;
+    font-weight:600;
+    border:none;
+    border-radius:10px;
+    margin-top:8px;
+    cursor:pointer;
+  }
+
+  .login-text{
+    margin-top:16px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .login-text a{
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  /* Form errors */
+  .form-errors li{
+    margin-bottom:6px;
+  }
+</style>
+
+<div class="signup-wrapper">
+
+  <!-- LOGO -->
+  <img src="{% static 'images/kurumi_logo.jpg' %}" class="signup-logo" alt="Kuromi Studio Logo">
+
+  <div class="logotype">Kuromi Studio</div>
+  <div class="subtitle">Create Your Account</div>
+
+  <h2>Register</h2>
+
+  <!-- Display form errors -->
+  {% if form.errors %}
+    <ul class="form-errors" style="color:#ff6b81; text-align:left; padding-left:0; list-style:none;">
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li>{{ field.label }}: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <!-- Username -->
+    <p>
+      {{ form.username.label_tag }}
+      {{ form.username }}
+    </p>
+
+    <!-- Email -->
+    <p>
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </p>
+
+    <!-- Password -->
+    <p class="password-wrapper">
+      {{ form.password.label_tag }}
+      {{ form.password }}
+      <span class="eye-icon" onclick="togglePassword('{{ form.password.id_for_label }}')">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+        </svg>
+      </span>
+    </p>
+
+    <!-- Confirm Password -->
+    <p class="password-wrapper">
+      {{ form.confirm_password.label_tag }}
+      {{ form.confirm_password }}
+      <span class="eye-icon" onclick="togglePassword('{{ form.confirm_password.id_for_label }}')">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+        </svg>
+      </span>
+    </p>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p class="login-text">
+    Already have an account? <a href="{% url 'login' %}">Login here</a>
+  </p>
+
+</div>
+
+<script>
+  function togglePassword(fieldId){
+    const input = document.getElementById(fieldId);
+    input.type = input.type === "password" ? "text" : "password";
+  }
+</script>
+
+{% endblock %}

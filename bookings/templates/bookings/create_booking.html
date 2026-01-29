@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="kb-wrapper">
+  <div class="kb-card">
+    <h2 class="kb-title">Create Booking</h2>
+
+    <form method="POST" class="kb-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="kb-btn">Save Booking</button>
+    </form>
+
+    <a href="{% url 'my_bookings' %}" class="kb-back">← Back to My Bookings</a>
+  </div>
+</div>
+
+<style>
+  :root{
+    --bg:#0f0710;
+    --card:#1e1320;
+    --accent:#c43b8d;
+    --muted:#bba6bf;
+  }
+
+  .kb-wrapper{
+    max-width:700px;
+    margin:40px auto;
+    padding:20px;
+  }
+
+  .kb-card{
+    background:var(--card);
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.05);
+  }
+
+  .kb-title{
+    font-family:'Great Vibes',cursive;
+    font-size:40px;
+    color:var(--accent);
+    margin-top:0;
+    margin-bottom:20px;
+    text-align:center;
+  }
+
+  .kb-form p{
+    color:var(--muted);
+    margin-bottom:16px;
+  }
+
+  .kb-form input, .kb-form select, .kb-form textarea{
+    width:100%;
+    padding:10px;
+    background:#120a13;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:8px;
+    color:#fff;
+  }
+
+  .kb-btn{
+    margin-top:10px;
+    background:linear-gradient(90deg,var(--accent),#8b2a6c);
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    width:100%;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(196,59,141,0.2);
+  }
+
+  .kb-btn:hover{
+    opacity:0.9;
+  }
+
+  .kb-back{
+    display:block;
+    margin-top:18px;
+    text-align:center;
+    color:var(--accent);
+    text-decoration:none;
+  }
+</style>
+{% endblock %}

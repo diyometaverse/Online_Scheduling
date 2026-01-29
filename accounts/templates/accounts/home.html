@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kuromi Studio — Home</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+
+    <style>
+        :root{
+            --bg:#0f0710;
+            --card:#1e1320;
+            --accent:#c43b8d;
+            --muted:#bba6bf;
+            --glass:rgba(255,255,255,0.04);
+            --alert-bg: #9c275c;
+        }
+
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            background:linear-gradient(180deg,var(--bg),#07020a);
+            font-family:Montserrat, Arial, sans-serif;
+            color:var(--muted);
+        }
+
+        .container {
+            padding: 24px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Sign / Header */
+        .sign {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: fit-content;
+            padding: 14px 22px;
+            border-radius: 18px;
+            background: var(--glass);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+        }
+
+        /* Logo image */
+        .sign-logo {
+            height: 90px;
+            width: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 14px rgba(196,59,141,0.35);
+        }
+
+        .logotype {
+            font-family: 'Great Vibes', cursive;
+            font-size: 42px;
+            color: var(--accent);
+        }
+        .subtitle {
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--muted);
+        }
+
+        /* Message box */
+        .message-box {
+            background: var(--alert-bg);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(196,59,141,0.6);
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Auth buttons */
+        .auth-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent), #8b2a6c);
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            margin: 4px;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(196,59,141,0.14);
+            transition: opacity 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Title */
+        h1 {
+            text-align: center;
+            color: white;
+            margin: 20px 0 30px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Services grid */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            padding-bottom: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+        .card h3 {
+            color: white;
+            margin: 12px;
+            font-size: 20px;
+        }
+        .card p {
+            margin: 0 12px 12px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- SIGN / LOGO BLOCK -->
+    <div class="sign">
+        <img src="{% static 'images/kurumi_logo.jpg' %}" class="sign-logo" alt="Kurumi Logo">
+        <div>
+            <div class="logotype">Kuromi Studio</div>
+            <div class="subtitle">Photography • Services</div>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div class="message-box" id="messageBox">
+        {% for msg in messages %}
+            {{ msg }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+    <div class="auth-box">
+        <a href="{% url 'login' %}" class="btn">Login</a>
+        <a href="{% url 'signup' %}" class="btn">Register</a>
+    </div>
+    {% endif %}
+
+    <h1>Our Photography Services</h1>
+
+    <div class="services">
+        <div class="card">
+            <img src="{% static 'images/portrait.jpg' %}" alt="Portrait" />
+            <h3>Portrait Session</h3>
+            <p>Studio or outdoor cinematic portrait photography.</p>
+            <a href="{% url 'book_now' %}" class="btn">Book Now</a>
+        </div>
+
+        <div class="card">
+            <img src="{% static 'images/wedding.jpg' %}" alt="Wedding" />
+            <h3>Wedding Photoshoot</h3>
+            <p>Complete wedding day documentation with creative storytelling.</p>
+            <a href="{% url 'book_now' %}" class="btn">Book Now</a>
+        </div>
+
+        <div class="card">
+            <img src="{% static 'images/product.jpg' %}" alt="Product Photography" />
+            <h3>Product Photography</h3>
+            <p>Crisp and aesthetic product shots for online or catalog use.</p>
+            <a href="{% url 'book_now' %}" class="btn">Book Now</a>
+        </div>
+
+        <div class="card">
+            <img src="{% static 'images/event.jpg' %}" alt="Event Coverage" />
+            <h3>Event Coverage</h3>
+            <p>Professional coverage for corporate, private, and themed events.</p>
+            <a href="{% url 'book_now' %}" class="btn">Book Now</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Auto-hide messages
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const msgBox = document.getElementById('messageBox');
+        if(msgBox) {
+            setTimeout(() => {
+                msgBox.style.opacity = '0';
+                setTimeout(() => msgBox.remove(), 500);
+            }, 3000);
+        }
+    });
+</script>
+
+</body>
+</html>
